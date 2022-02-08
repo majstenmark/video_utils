@@ -22,13 +22,24 @@ def create_file(data_folder, name):
             list_file.write(f"file '{mp4}'\n")
 
             cmd = f'ffmpeg -i {vid} -vf yadif=1 -acodec ac3 -ab 192k -vcodec mpeg4 -f mp4 -y -qscale 0 {mp4}'
-            subprocess.run(cmd.split())
             print(cmd)
+            subprocess.run(cmd.split())
+            
             
     #run concat command.
-    cmd = f'ffmpeg -f concat -safe 0 -i concat_list.txt -c copy {name}'
-    print(cmd)
-    subprocess.run(cmd.split())
+
+   
+
+    name_tmp = name.strip('.mp4') + '_tmp.mp4'
+    name = name.strip('.mp4') + '.mp4'
+    cmdconcat = f'ffmpeg -f concat -safe 0 -i concat_list.txt -c copy {name_tmp}' #'ffmpeg -f concat -safe 0 -i mylist.txt -c copy output2.mp4
+    print(cmdconcat)
+    subprocess.run(cmdconcat.split())
+    
+    remsound = f'ffmpeg -i {name_tmp} -c copy -an {name}'
+    print(remsound)
+    subprocess.run(remsound.split())
+    
 
 def main():
     args = get_args()
