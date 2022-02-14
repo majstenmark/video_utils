@@ -39,6 +39,7 @@ def create_file(data_folder, name):
     remsound = f'ffmpeg -i {name_tmp} -c copy -an {name}'
     print(remsound)
     subprocess.run(remsound.split())
+    os.remove(name_tmp)
     
 
 def main():
