@@ -6,7 +6,7 @@ import subprocess
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--data_folder', required=True, action='store', default='.', help="folder")
-    parser.add_argument('-n', '--name', required=True, action='store', default='.', help="Either train or test")
+    parser.add_argument('-n', '--name', required=True, action='store', default='.', help="name of output video file")
     
     return parser.parse_args()
 
@@ -20,10 +20,10 @@ def create_file(data_folder, name):
         for i, vid in enumerate(video_files):
             mp4 = vid.replace('.MTS', '.mp4')
             list_file.write(f"file '{mp4}'\n")
-
-            cmd = f'ffmpeg -i {vid} -vf yadif=1 -acodec ac3 -ab 192k -vcodec mpeg4 -f mp4 -y -qscale 0 {mp4}'
-            print(cmd)
-            subprocess.run(cmd.split())
+            if not os.path.isfile(mp4):
+                cmd = f'ffmpeg -i {vid} -vf yadif=1 -acodec ac3 -ab 192k -vcodec mpeg4 -f mp4 -y -qscale 0 {mp4}'
+                print(cmd)
+                subprocess.run(cmd.split())
             
             
     #run concat command.
